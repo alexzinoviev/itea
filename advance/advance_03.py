@@ -114,8 +114,30 @@
 
 #--------------------------------------------------------
 # scan files in directory by mask
+#
+# import fnmatch, os
+# for filename in os.listdir('../base'):
+#     if fnmatch.fnmatch(filename, '*py'):
+#         print(filename)
+#
+#--------------------------------------------------------
+# csv files
 
-import fnmatch, os
-for filename in os.listdir('../base'):
-    if fnmatch.fnmatch(filename, '*py'):
-        print(filename)
+# import csv
+# with open ('file.csv', 'wt') as f:
+#     w = csv.writer(f)
+#     w.writerow(('aa aa', 1234))
+#     w.writerow(('bb bb', 5678))
+#
+#
+# with open('file.csv', 'rt') as f:
+#     w = csv.reader(f)
+#     for row in w:
+#         print(row)
+#
+#
+
+#--------------------------------------------------------
+
+import fcntl # захватить и залочить файл
+f = open('file.txt')
