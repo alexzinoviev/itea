@@ -10,7 +10,8 @@ class Pool:
     def _create_fishes(self, cls, qty):
         return [cls(
             random.randint(1, self._w),
-            random.randint(1, self._l)
+            random.randint(1, self._l),
+            self
         ) for _ in range(qty)]
 
 
@@ -25,8 +26,8 @@ class Pool:
         return self._l
 
     def get_nearest_small_fish(self, x, y):
-        return min([fish for fish in self._fishes if isinstance(fish, Eatable)]),# проверяем что наша рыба принадлежит классу SmallFish
-        key=lambda _ : _.get_distance(x,y)
+        return min([fish for fish in self._fishes if isinstance(fish, Eatable)],# проверяем что наша рыба принадлежит классу SmallFish
+            key=lambda _ : _.get_distance(x,y))
 
     def __repr__(self):
         return  '\n'.join([str(fish) for fish in self._fishes])
@@ -40,6 +41,14 @@ class Fish:
 
     def get_distance(self, x, y):
         return math.hypot(self._x - x, self._y - y)
+
+    def move(self):
+        self._x = 1 if self._x < 1 else self._x
+        self._x = self._pool.get_width() if self._x > self._pool.get_width() \
+            else self._x
+        self._y = 1 if self._y < 1 else self._y
+        self._y = self._pool.get_length() if self._y > self._pool.get_length() \
+            else self._y
 
     def __repr__(self):
         return "{}(x={}, y={})".format(
@@ -60,25 +69,23 @@ class SmallFish(Fish, Eatable):
     def move(self):
         self._x = self._x + random.randint(-1, 1)
         self._y = self._y + random.randint(-1, 1)
-        self._x = 1 if self._x < 1 else self._x
-        self._x = self._pool.get_width() if self._x > self._pool.get_width()\
-            else self._x
-        self._y = 1 if self._y < 1 else self._y
-        self._y = self._pool.get_length() if self._y > self._pool.get_length()\
-            else self._y
-
-
-
+        super().move()
 
 
 class BigFish(Fish):
-    def __init__(self, x, y, pool):
+    def __init__(self, x, y, pool: Pool):
         super().__init__(x, y, pool)
 
     def move(self):
-        pass
+        nearest_fish = self._pool.get_nearest_small_fish(self._x, self._y)
+        self._x = self._x - 2 if self._x > nearest_fish._x else 2
+        self._y = self._y - 2 if self._y > nearest_fish._y else 2
+        super().move()
 
 
 if __name__ == '__main__':
     p = Pool(10, 10, 3, 5)
+    print(p)
+    p.move_fishes()
+    print("---------------------------")
     print(p)
