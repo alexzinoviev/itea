@@ -1,4 +1,1 @@
-string1
-string2
-string3
-строка4
+String
