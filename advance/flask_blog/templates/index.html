@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Microblog</title>
+    </head>
+    <body>
+        <h1>Hello</h1>
+        {% block content %}
+        <a href='/add'>Add</a>
+        {% if posts %}
+            <ul>
+            {# comment #}
+            {% for post in posts %}
+                <li><b>{{post.1}}:</b> {{post.2}}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p> There are no posts</p>
+        {% endif %}
+        {% endblock %}
+        {% block footer %}
+        <h5>-----Footer-----</h5>
+        {% include 'copy.html' %}
+        {% endblock %}
+    </body>
+</html>
